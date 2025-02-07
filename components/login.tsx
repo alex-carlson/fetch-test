@@ -42,23 +42,23 @@ export default function Login() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center">
-            <div className="p-6 rounded-lg shadow-md w-80">
-                {error && <p className="text-red-500 mb-2">{error}</p>}
+        <div className="flex flex-col items-center justify-center w-full">
+            <div className="p-6 rounded-lg w-80 max-w-xs">
+                {error && <p className="text-red-500 mb-4">{error}</p>}
                 <Input
                     isRequired
                     label="Name"
-                    className="mb-3"
+                    className="mb-6 w-full max-w-xs"
                     onChange={(e) => setName(e.target.value)}
                 />
                 <Input
                     isRequired
                     label="Email"
                     type="email"
-                    className="mb-3"
+                    className="mb-6 w-full max-w-xs"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <Button color="primary" onPress={handleLogin} className="w-full">Login</Button>
+                <Button color="warning" onPress={handleLogin} className="w-full">Login</Button>
             </div>
         </div>
     );

@@ -19,6 +19,7 @@ import {
 } from "@/components/icons";
 
 export const Navbar = () => {
+
   const searchInput = (
     <Input
       aria-label="Search"
@@ -60,11 +61,42 @@ export const Navbar = () => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/">
+          <Link color="danger" href="/logout">
             Logout
           </Link>
         </NavbarItem>
       </NavbarContent>
+      <NavbarContent className="sm:hidden absolut top-10" justify="end">
+        <NavbarMenuToggle />
+      </NavbarContent>
+      <NavbarMenu>
+        <NavbarMenuItem>
+          <Link
+            className="w-full"
+            color="foreground"
+            href="/browse"
+            size="lg"
+          >
+            Browse
+          </Link>
+          <Link
+            className="w-full"
+            color="foreground"
+            href="/favorites"
+            size="lg"
+          >
+            Favorites
+          </Link>
+          <Link
+            className="w-full"
+            color="warning"
+            href="/logout"
+            size="lg"
+          >
+            Logout
+          </Link>
+        </NavbarMenuItem>
+      </NavbarMenu>
     </HeroUINavbar>
   );
 };

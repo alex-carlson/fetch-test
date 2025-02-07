@@ -25,6 +25,18 @@ module.exports = {
       themes: {
         light: {
           colors: {
+            primary: "#e6be2d",
+            secondary: "#c14413",
+            accent: "#ff1c7b",
+            neutral: "#888585",
+            background: "#120218",
+            white: "#ffffff",
+            black: "#000000",
+            "default-500": "#282828",
+            "default-400": "#5b5b5b",
+            "default-300": "#858585",
+            "default-200": "#c9c9c9",
+            "default-100": "#c3c3c3",
             // primary: "var(--color-primary)",
             // secondary: "var(--color-secondary)",
             // accent: "var(--color-accent)",
@@ -43,8 +55,11 @@ module.exports = {
         },
         dark: {
           colors: {
-            primary: "#b52de6",
-            secondary: "#c11344",
+            primary: "#e6be2d",
+            secondary: "#c14413",
+            accent: "#ff1c7b",
+            neutral: "#888585",
+            background: "#2c0939",
             // accent: "var(--color-accent)",
             // neutral: "var(--color-neutral)",
             // "neutral-focus": "var(--color-neutral-focus)",

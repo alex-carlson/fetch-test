@@ -6,6 +6,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Button } from "@heroui/button";
 import { siteConfig } from "@/config/site";
+import { f } from "@heroui/slider/dist/use-slider-9ae8d8d3";
 
 export default function Favorites() {
     const { favorites, removeFavorite } = useUserDataContext();
@@ -43,8 +44,10 @@ export default function Favorites() {
 
             const data = await response.json();
 
-            setMatch(data);
             console.log(match);
+
+            // set match to dog with matching id in favorites
+            setMatch(favorites.find((dog) => dog.id === data.match));
 
         } catch (err) {
             let errorMessage = "An error occurred";
@@ -55,8 +58,55 @@ export default function Favorites() {
         }
     };
 
-    const hasMatch = () => {
-        return match.id !== null;
+    const getDog = async (id: number) => {
+        try {
+            const response = await fetch(`${siteConfig.api.baseUrl}/dogs/${id}`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                });
+
+            if (!response.ok) {
+                throw new Error("Search failed");
+            }
+
+            const data = await response.json();
+
+        } catch (err) {
+            let errorMessage = "An error occurred";
+            if (err instanceof Error) {
+                errorMessage = err.message;
+            }
+            console.log(errorMessage);
+        }
+    };
+
+
+
+    const Match = () => {
+        // if match has an id, render match
+        if (match.id) {
+            return (
+                <Card className="border-none justify-center items-center" radius="lg">
+                    <p className="text-default-500 font-medium text-large py-0">{match.name} is your match!</p>
+                    <Image
+                        alt={match.name}
+                        className="object-cover w-full aspect-[1/1]"
+                        src={match.img}
+                    />
+                    <p className="text-med text-default-500">Congratulations!</p>
+                </Card>
+            );
+        } else {
+            return (
+                <div id="match">
+                    <div>
+                        <h1>No match found</h1>
+                    </div>
+                </div>
+            );
+        }
     };
 
     return (
@@ -79,31 +129,19 @@ export default function Favorites() {
                                 <p className="text-small text-default-500">zip: {favorite.zip_code}</p>
                             </CardBody>
                             <CardFooter className="flex justify-between py-3">
-                                <Button className="w-full" color="primary" onPress={() => handleFavorite(favorite)}>
+                                <Button className="w-full" color="warning" onPress={() => handleFavorite(favorite)}>
                                     Remove
                                 </Button>
                             </CardFooter>
                         </Card>
                     ))}
                 </div>
-                <div className="flex flex-col justify-center py-8 md:py-10 justify-center gap-4">
+                <div className="justify-center inline-block grid grid-cols-1 gap-6">
                     <h1 className="text-center text-2xl font-bold">Find Match</h1>
-                    <Button className="h4" color="primary" onPress={() => findMatch()}>Search</Button>
-                    <div className="h-4">
+                    <Button color="warning" onPress={() => findMatch()}>Search</Button>
+                    <div className="justify-center inline-block grid grid-cols-1 gap-6 ">
                         {/* draw match results */}
-                        <Card className="border-none" radius="lg">
-                            <Image
-                                // alt={match.name}
-                                className="object-cover w-64 h-64 mx-auto"
-                                // src={match.img}
-                                width={270}
-                            />
-                            <CardBody className="flex flex-col gap-2">
-                                {/* <p className="text-default-500 font-medium text-large py-0">{match.name}</p> */}
-                                {/* <p>is {NumberWithArticle(match.age)} year old {match.breed}</p> */}
-                                {/* <p className="text-small text-default-500">zip: {match.zip_code}</p> */}
-                            </CardBody>
-                        </Card>
+                        <Match />
                     </div>
                 </div>
             </div>

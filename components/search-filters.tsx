@@ -62,13 +62,10 @@ export default function SearchFilters() {
                 zipCodes: zipCode,
                 ageMin: ageRange[0],
                 ageMax: ageRange[1],
-                page: page,
             };
 
             //remove param if undefined, or empty array
             params = Object.fromEntries(Object.entries(params).filter(([_, value]) => value));
-
-            console.log(params);
 
             const response = await fetch(`${siteConfig.api.baseUrl}/dogs/search?` + new URLSearchParams(params),
                 {
@@ -104,17 +101,20 @@ export default function SearchFilters() {
     // on load, fetch breeds
     useEffect(() => {
         dogBreeds();
+        handleSearch();
     }, []);
 
     useEffect(() => {
-        console.log(page);
         handleSearch();
-    }, [page]);
+    }, [page, filteredBreeds, zipCode, ageRange]);
 
     return (
         <div className="flex flex-col w-full items-center justify-center md:flex-row gap-4">
             <Select
+                isVirtualized
                 className=" p-2 rounded-lg"
+                maxListboxHeight={400}
+                showScrollIndicators={true}
                 label="Breed"
                 placeholder="Browse by Breed"
                 selectedKeys={filteredBreeds}
@@ -130,7 +130,7 @@ export default function SearchFilters() {
             <Input
                 label="Zip Code"
                 className=" p-2 rounded-lg"
-                variant="bordered"
+                variant="flat"
                 onChange={(e) => setZipCode(e)}
             />
             <div className="flex flex-col gap-2 w-full h-full max-w-md items-start justify-center">
@@ -147,7 +147,7 @@ export default function SearchFilters() {
                     {/* Age Range: {Array.isArray(ageRange) && ageRange.map((b) => `${b}`).join(" – ")} */}
                 </p>
             </div>
-            <Button color="primary" onPress={() => handleSearch()} className="w-full p-2 rounded-lg">Search</Button>
+            {/* <Button color="warning" onPress={() => handleSearch()} className="w-full p-2 rounded-lg">Search</Button> */}
         </div>
     );
 }

@@ -19,6 +19,10 @@ export default function SearchList() {
         fetchDogData();
     }, [dogIds]);
 
+    useEffect(() => {
+        fetchDogData();
+    }, []);
+
     //fetch data from api
     const fetchDogData = async () => {
 
@@ -50,7 +54,7 @@ export default function SearchList() {
     const handleFavorite = (dog: any) => {
         addFavorite(dog);
 
-        console.log(favorites)
+        console.log("favorites:" + favorites)
     };
 
     const NumberWithArticle = (number) => {
@@ -80,7 +84,7 @@ export default function SearchList() {
                             <p className="text-small text-default-500">zip: {dog.zip_code}</p>
                         </CardBody>
                         <CardFooter className="flex justify-between py-3">
-                            <Button className="w-full" color="primary" onPress={() => handleFavorite(dog)}>
+                            <Button className="w-full" color="warning" onPress={() => handleFavorite(dog)}>
                                 Favorite
                             </Button>
                         </CardFooter>
