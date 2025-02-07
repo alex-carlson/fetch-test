@@ -13,6 +13,10 @@ export const siteConfig = {
       href: "/browse",
     },
     {
+      label: "Favorites",
+      href: "/favorites",
+    },
+    {
       label: "Logout",
       href: "/logout",
     },
@@ -25,6 +29,10 @@ export const siteConfig = {
     {
       label: "Browse",
       href: "/browse",
+    },
+    {
+      label: "Favorites",
+      href: "/favorites"
     },
     {
       label: "Logout",

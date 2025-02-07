@@ -1,13 +1,27 @@
 "use client";
-import React, { useEffect, useContext } from "react";
-import Card from "./card";
+import React, { useEffect, useContext, useState } from "react";
+import { useDogDataContext } from "@/context/DogDataContext";
+import { useUserDataContext } from "@/context/UserContext";
 import { siteConfig } from "@/config/site";
+import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Image } from "@heroui/image";
+import { Button } from "@heroui/button";
 
-export default function SearchList({ data }) {
-    const dogIds = data;
-    const [result, setResult] = React.useState([]);
-    // fetch dog data from list of dog ids
+export default function SearchList() {
+
+    // get dogIds from context
+    const { dogIds } = useDogDataContext();
+    const { dogs, setDogs } = useDogDataContext();
+    const { favorites, addFavorite, removeFavorite, isFavorite } = useUserDataContext();
+    const { page, setPage } = useDogDataContext();
+
+    useEffect(() => {
+        fetchDogData();
+    }, [dogIds]);
+
+    //fetch data from api
     const fetchDogData = async () => {
+
         try {
             const response = await fetch(`${siteConfig.api.baseUrl}/dogs`,
                 {
@@ -20,16 +34,9 @@ export default function SearchList({ data }) {
             if (!response.ok) {
                 throw new Error("Search failed");
             }
-            
-            // use context to set data
-            const context = useContext(data);
-            console.log(context);
 
             const d = await response.json();
-
-
-            setResult(d);
-
+            setDogs(d);
 
         } catch (err) {
             let errorMessage = "An error occurred";
@@ -40,15 +47,46 @@ export default function SearchList({ data }) {
         }
     }
 
-    useEffect(() => {
-        fetchDogData();
-    }, []);
+    const handleFavorite = (dog: any) => {
+        addFavorite(dog);
+
+        console.log(favorites)
+    };
+
+    const NumberWithArticle = (number) => {
+        const getArticle = (num) => {
+            const firstDigit = num.toString()[0]; // Get first digit as a string
+            const vowels = ["8", "11", "18"]; // Numbers pronounced with a vowel sound
+            return vowels.includes(num.toString()) || firstDigit === "8" ? "an" : "a";
+        };
+
+        return `${getArticle(number)} ${number}`;
+    };
+
 
     return (
-        <div className="flex flex-col gap-4">
-            {result.map((result, index) => (
-                <Card data={result} key={index} />
-            ))}
+        <div className="w-full flex flex-col">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {dogs.map((dog, index) => (
+                    <Card className="border-none" radius="lg" key={index}>
+                        <Image
+                            alt={dog.name}
+                            className="object-cover w-full aspect-[1/1]"
+                            src={dog.img}
+                        />
+                        <CardBody className="flex flex-col gap-2">
+                            <p className="text-default-500 font-medium text-large py-0">{dog.name}</p>
+                            <p>is {NumberWithArticle(dog.age)} year old {dog.breed}</p>
+                            <p className="text-small text-default-500">zip: {dog.zip_code}</p>
+                        </CardBody>
+                        <CardFooter className="flex justify-between py-3">
+                            <Button className="w-full" color="primary" onPress={() => handleFavorite(dog)}>
+                                Favorite
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                ))}
+            </div>
         </div>
     );
 }

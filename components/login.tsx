@@ -4,13 +4,15 @@ import { Button } from "@heroui/button";
 import { useState } from "react";
 import { siteConfig } from "@/config/site";
 import { useRouter } from "next/navigation";
+import { useUserDataContext } from "@/context/UserContext";
 
 
 export default function Login() {
     const [error, setError] = useState(null);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
     const router = useRouter();
+
+    const { name, setName } = useUserDataContext();
+    const [email, setEmail] = useState("");
 
     const handleLogin = async () => {
         setError(null);
@@ -56,7 +58,7 @@ export default function Login() {
                     className="mb-3"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <Button onPress={handleLogin} className="w-full">Login</Button>
+                <Button color="primary" onPress={handleLogin} className="w-full">Login</Button>
             </div>
         </div>
     );

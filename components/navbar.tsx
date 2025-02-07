@@ -2,10 +2,16 @@ import {
   Navbar as HeroUINavbar,
   NavbarContent,
   NavbarBrand,
+  NavbarItem,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem
 } from "@heroui/navbar";
 import { Kbd } from "@heroui/kbd";
 import { Input } from "@heroui/input";
 import NextLink from "next/link";
+import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
 
 import {
   SearchIcon,
@@ -36,13 +42,28 @@ export const Navbar = () => {
 
   return (
     //hero ui navbar with just a centered logo
-    <HeroUINavbar maxWidth="xl" position="sticky" className="flex justify-center">
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="center">
-        <NavbarBrand as="li" className="gap-3 max-w-fit ">
-          <NextLink className="flex justify-center items-center gap-1" href="/">
-            <Logo className="text-primary" />
-          </NextLink>
-        </NavbarBrand>
+    <HeroUINavbar maxWidth="xl" position="sticky" className="flex justify-center py-6">
+      <NavbarBrand as="li" className="gap-3 max-w-fit ">
+        <NextLink className="flex justify-center items-center gap-1" href="/">
+          <Logo className="text-primary" />
+        </NextLink>
+      </NavbarBrand>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarItem>
+          <Link color="foreground" href="/browse">
+            Browse
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive>
+          <Link color="foreground" href="/favorites">
+            Favorites
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link color="foreground" href="/">
+            Logout
+          </Link>
+        </NavbarItem>
       </NavbarContent>
     </HeroUINavbar>
   );
