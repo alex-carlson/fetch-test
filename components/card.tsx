@@ -7,7 +7,7 @@ export default function Card({ data }) {
                 <h1 className="text-3xl font-bold">{data.name}</h1>
                 <p className="text-xl">{data.breed}</p>
                 <p className="text-xl">{data.age}</p>
-                <p className="text-xl">{data.location}</p>
+                // <p className="text-xl">{data.location}</p>
             </div>
         </div>
     );

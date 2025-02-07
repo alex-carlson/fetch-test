@@ -9,7 +9,6 @@ function Search({ details }) {
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value)
-        console.log(searchTerm)
     };
 
     function searchList() {

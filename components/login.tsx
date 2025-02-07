@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [error, setError] = useState(null);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const router = useRouter();
 
     const handleLogin = async () => {
@@ -25,8 +27,6 @@ export default function Login() {
             if (!response.ok) {
                 throw new Error("Login failed");
             } else {
-                // set name
-                setName(name);
                 router.push("/browse");
             }
 

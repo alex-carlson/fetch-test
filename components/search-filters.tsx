@@ -2,7 +2,7 @@
 //template for search filters
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { siteConfig } from "@/config/site";
 import {
     Autocomplete,
@@ -15,11 +15,43 @@ export default function SearchFilters() {
     const [zipCode, setZipCode] = useState("");
     const [ageMin, setAgeMin] = useState("");
     const [ageMax, setAgeMax] = useState("");
+    const [breeds, setBreeds] = useState([{key: "", value:""}]);
 
-    const animalList = siteConfig.animals;
+    //fetch dog breeds and return Iterable<object>
+    const dogBreeds = async () => {
+        // fetch breeds from api
+        try {
+            const response = await fetch(`${siteConfig.api.baseUrl}/dogs/breeds`,
+                {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include"
+                });
 
-    //convert animalList to Iterable<object>
-    const iterableAnimalList = Object.entries(animalList).map(([key, value]) => ({ key, label: value }));
+            if (!response.ok) {
+                throw new Error("Breeds failed");
+            }
+
+            const data = await response.json();
+
+            // format data to key value pairs
+            data.forEach((breed, index) => {
+                data[index] = {
+                    key: breed,
+                    value: breed
+                };
+            });
+
+            setBreeds(data);
+
+        } catch (err) {
+            let errorMessage = "An error occurred";
+            if (err instanceof Error) {
+                errorMessage = err.message;
+            }
+            console.log(errorMessage);
+        }
+    };
 
     const handleBreedChange = (e) => {
         setBreed(e);
@@ -63,7 +95,7 @@ export default function SearchFilters() {
 
             const data = await response.json();
 
-            console.log(data);
+
 
         } catch (err) {
             let errorMessage = "An error occurred";
@@ -74,17 +106,22 @@ export default function SearchFilters() {
         }
     };
 
+    // on load, fetch breeds
+    useEffect(() => {
+        dogBreeds();
+    }, []);
+    
     return (
         <div className="flex flex-col items-center justify-center">
             <div className="p-6 rounded-lg shadow-md w-80">
                 <Autocomplete
                     className="max-w-xs"
-                    defaultItems={iterableAnimalList}
+                    defaultItems={breeds}
                     label="Favorite Animal"
                     placeholder="Search an animal"
                     onInputChange={(e) => handleBreedChange(e)}
                 >
-                    {(item) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+                    {(item) => <AutocompleteItem key={item.key}>{item.value}</AutocompleteItem>}
                 </Autocomplete>
                 <Input
                     label="Zip Code"
