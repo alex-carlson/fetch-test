@@ -5,6 +5,7 @@ import { useState } from "react";
 import { siteConfig } from "@/config/site";
 import { useRouter } from "next/navigation";
 import { useUserDataContext } from "@/context/UserContext";
+import { Form } from "@heroui/form";
 
 
 export default function Login() {
@@ -14,7 +15,8 @@ export default function Login() {
     const { name, setName } = useUserDataContext();
     const [email, setEmail] = useState("");
 
-    const handleLogin = async () => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setError(null);
         try {
             const response = await fetch(`${siteConfig.api.baseUrl}/auth/login`, {
@@ -43,7 +45,7 @@ export default function Login() {
 
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            <div className="p-6 rounded-lg w-80 max-w-xs">
+            <Form onSubmit={onSubmit} className="p-6 rounded-lg w-80 max-w-xs">
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <Input
                     isRequired
@@ -58,8 +60,8 @@ export default function Login() {
                     className="mb-6 w-full max-w-xs"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <Button color="warning" onPress={handleLogin} className="w-full">Login</Button>
-            </div>
+                <Button type="submit" color="warning" className="w-full">Login</Button>
+            </Form>
         </div>
     );
 }

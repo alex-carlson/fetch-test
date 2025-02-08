@@ -14,6 +14,8 @@ export default function SearchList() {
     const { dogs, setDogs } = useDogDataContext();
     const { favorites, addFavorite, removeFavorite, isFavorite } = useUserDataContext();
     const { page, setPage } = useDogDataContext();
+    const { nextPage, setNextPage } = useDogDataContext();
+    const { prevPage, setPrevPage } = useDogDataContext();
 
     useEffect(() => {
         fetchDogData();
@@ -22,6 +24,11 @@ export default function SearchList() {
     useEffect(() => {
         fetchDogData();
     }, []);
+
+    // if page increases, fetch nest from data, if page decreases, get pre
+    useEffect(() => {
+        fetchDogData();
+    }, [page]);
 
     //fetch data from api
     const fetchDogData = async () => {

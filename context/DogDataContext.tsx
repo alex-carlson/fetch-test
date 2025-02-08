@@ -7,6 +7,10 @@ export interface DogDataType {
     setDogIds: (dogIds: number[]) => void;
     page: number;
     setPage: (page: number) => void;
+    nextPage: string;
+    prevPage: string;
+    setNextPage: (nextPage: string) => void;
+    setPrevPage: (prevPage: string) => void;
 }
 
 export interface DogData {
@@ -24,9 +28,11 @@ export const DogDataProvider = ({ children }: { children: ReactNode }) => {
     const [dogs, setDogs] = useState([]);
     const [dogIds, setDogIds] = useState<number[]>([]);
     const [page, setPage] = useState(1);
+    const [nextPage, setNextPage] = useState("");
+    const [prevPage, setPrevPage] = useState("");
 
     return (
-        <DogDataContext.Provider value={{ dogs, dogIds, setDogs, setDogIds, page, setPage }}
+        <DogDataContext.Provider value={{ dogs, dogIds, setDogs, setDogIds, page, setPage, nextPage, prevPage, setNextPage, setPrevPage }}
         >
             {children}
         </DogDataContext.Provider>
