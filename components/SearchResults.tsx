@@ -9,30 +9,28 @@ import { Button } from "@heroui/button";
 
 function SearchResults() {
 
-    const { page, setPrevPage, setNextPage, prevPage, nextPage } = useDogDataContext();
+    const { page, setPage, pageSize, setPageSize, dogs } = useDogDataContext();
+
+    const setPrevPage = () => {
+        // prevent page from going below 0
+        if (page - pageSize < 0) {
+            return;
+        }
+        console.log("Setting prev page to: " + (page - pageSize));
+        setPage(page - pageSize);
+    };
+
+    const setNextPage = () => {
+        console.log("Setting next page to: " + (page + pageSize));
+        setPage(page + pageSize);
+    };
 
     return (
         <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
             <SearchList />
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 py-3">
                 <div className="flex gap-2">
-                    <Button
-                        color="warning"
-                        size="sm"
-                        // variant="flat"
-                        onPress={() => setPrevPage(prevPage)}
-                    >
-                        Previous
-                    </Button>
-                    <p>Page {page}</p>
-                    <Button
-                        color="warning"
-                        size="sm"
-                        // variant="flat"
-                        onPress={() => setNextPage(nextPage)}
-                    >
-                        Next
-                    </Button>
+                    <Pagination showControls color="primary" boundaries={3} initialPage={1} total={10} onChange={(e) => setPage(e)} />
                 </div>
             </div>
         </section>

@@ -60,7 +60,7 @@ export default function Login() {
                     className="mb-6 w-full max-w-xs"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <Button type="submit" color="warning" className="w-full">Login</Button>
+                <Button type="submit" color="primary" className="w-full text-black font-bold">Login</Button>
             </Form>
         </div>
     );

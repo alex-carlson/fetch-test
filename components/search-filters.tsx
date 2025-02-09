@@ -7,20 +7,33 @@ import { useState, useEffect, useContext } from "react";
 import { siteConfig } from "@/config/site";
 import { useDogDataContext } from "@/context/DogDataContext";
 import { Select, SelectItem } from "@heroui/select";
-import next from "next";
+import { Switch } from "@heroui/switch";
+
+// create interface for sort mode, for breed, name, age, and location, ascending or descending.
+
+enum SortType {
+    Breed = "breed",
+    Name = "name",
+    Age = "age",
+    Location = "location",
+}
+
+interface SortMode {
+    ascending: boolean;
+    type: SortType;
+}
 
 export default function SearchFilters() {
     const [zipCode, setZipCode] = useState("");
     const [ageRange, setAgeRange] = useState([1, 10]);
     const [breeds, setBreeds] = useState([{ key: "", value: "" }]);
     const [filteredBreeds, setFilteredBreeds] = useState([]);
+    const [sortAscending, setSortAscending] = useState<boolean>(true);
+    const [sortType, setSortType] = useState(SortType.Breed);
 
-    const { dogIds, setDogIds } = useDogDataContext();
-    const { dogs, setDogs } = useDogDataContext();
+    const { setDogIds } = useDogDataContext();
 
-    const { page, setPage } = useDogDataContext();
-    const { nextPage, setNextPage } = useDogDataContext();
-    const { prevPage, setPrevPage } = useDogDataContext();
+    const { page, pageSize } = useDogDataContext();
 
     //fetch dog breeds and return Iterable<object>
     const dogBreeds = async () => {
@@ -58,19 +71,22 @@ export default function SearchFilters() {
         }
     };
 
-    const handleSearch = async (query: string = "/dogs/search&size=25&from=25") => {
+    const requestDogs = async () => {
         try {
+            let sortDir = (sortAscending) ? "asc" : "desc";
             let params = {
                 breeds: [...filteredBreeds].join(", "),
                 zipCodes: zipCode,
                 ageMin: ageRange[0],
                 ageMax: ageRange[1],
+                sort: `${sortType}:` + sortDir,
+                from: page,
             };
 
             //remove param if undefined, or empty array
             params = Object.fromEntries(Object.entries(params).filter(([_, value]) => value));
 
-            const response = await fetch(`${siteConfig.api.baseUrl}` + query + `?` + new URLSearchParams(params),
+            const response = await fetch(`${siteConfig.api.baseUrl}/dogs/search?` + new URLSearchParams(params),
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -83,8 +99,6 @@ export default function SearchFilters() {
 
             const data = await response.json();
             setDogIds(data.resultIds);
-            setNextPage(data.next);
-            setPrevPage(data.prev);
 
         } catch (err) {
             let errorMessage = "An error occurred";
@@ -106,61 +120,69 @@ export default function SearchFilters() {
     // on load, fetch breeds
     useEffect(() => {
         dogBreeds();
-        handleSearch();
+        requestDogs();
     }, []);
 
     useEffect(() => {
-        handleSearch();
-    }, [page, filteredBreeds, zipCode, ageRange]);
-
-    useEffect(() => {
-        handleSearch(nextPage);
-    }, [nextPage]);
-
-    useEffect(() => {
-        handleSearch(prevPage);
-    }, [prevPage]);
+        requestDogs();
+    }, [filteredBreeds, zipCode, ageRange, sortAscending, sortType, page]);
 
     return (
-        <div className="flex flex-col w-full items-center justify-center md:flex-row gap-4">
-            <Select
-                isVirtualized
-                className=" p-2 rounded-lg"
-                maxListboxHeight={400}
-                showScrollIndicators={true}
-                label="Breed"
-                placeholder="Browse by Breed"
-                selectedKeys={filteredBreeds}
-                selectionMode="single"
-                onSelectionChange={(e) => setFilteredBreeds(e)}
-            >
-                {breeds.map((breed, index) => (
-                    <SelectItem key={breed.key}>
-                        {breed.value}
-                    </SelectItem>
-                ))}
-            </Select>
-            <Input
-                label="Zip Code"
-                className=" p-2 rounded-lg"
-                variant="flat"
-                onChange={(e) => setZipCode(e)}
-            />
-            <div className="flex flex-col gap-2 w-full h-full max-w-md items-start justify-center">
+        <div className="flex flex-col w-full items-center justify-center gap-4 py-8">
+            <div className="flex flex-col md:flex-row mx-auto w-full">
+                <Select
+                    isVirtualized
+                    className=" p-2 rounded-lg"
+                    maxListboxHeight={400}
+                    showScrollIndicators={true}
+                    label="Breed"
+                    placeholder="Browse by Breed"
+                    selectedKeys={filteredBreeds}
+                    selectionMode="single"
+                    onSelectionChange={(e) => setFilteredBreeds(e)}
+                >
+                    {breeds.map((breed, index) => (
+                        <SelectItem key={breed.key}>
+                            {breed.value}
+                        </SelectItem>
+                    ))}
+                </Select>
+                <Input
+                    label="Zip Code"
+                    className=" p-2 rounded-lg"
+                    variant="flat"
+                    onChange={(e) => setZipCode(e)}
+                />
                 <Slider
                     className="max-w-md"
                     label="Age Range"
                     minValue={1}
-                    maxValue={15}
+                    maxValue={10}
                     step={1}
                     value={ageRange}
                     onChange={(e) => setAgeRange(e)}
                 />
-                <p className="text-default-500 font-medium text-small">
-                    {/* Age Range: {Array.isArray(ageRange) && ageRange.map((b) => `${b}`).join(" – ")} */}
-                </p>
             </div>
-            {/* <Button color="warning" onPress={() => handleSearch()} className="w-full p-2 rounded-lg">Search</Button> */}
+            <div className="flex flex-col md:flex-row mx-auto w-full py-3 gap-4 text-center justify-center row-span-2">
+                {/* add sort mode select */}
+                <Select
+                    isVirtualized
+                    className=" p-2 rounded-lg max-w-96"
+                    showScrollIndicators={true}
+                    label="Sort"
+                    placeholder="Sort by"
+                    selectedKeys={[sortType]}
+                    selectionMode="single"
+                    onSelectionChange={(e) => setSortType(e.currentKey)}
+                >
+                    <SelectItem key={SortType.Breed}>Breed</SelectItem>
+                    <SelectItem key={SortType.Name}>Name</SelectItem>
+                    <SelectItem key={SortType.Age}>Age</SelectItem>
+                    <SelectItem key={SortType.Location}>Location</SelectItem>
+                </Select>
+                <Switch isSelected={sortAscending} onValueChange={setSortAscending}>{sortAscending ? "Ascending" : "Descending"}</Switch>
+                {/* <Button color="primary" onPress={() => requestDogs()} className="w-full p-2 rounded-lg">Search</Button> */}
+            </div>
         </div>
     );
 }

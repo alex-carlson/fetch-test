@@ -14,7 +14,7 @@ export default function Browse() {
 
     const fetchDogs = async () => {
         try {
-            const response = await fetch(`${siteConfig.api.baseUrl}/dogs/search`,
+            const response = await fetch(`${siteConfig.api.baseUrl}/dogs/search?sort=breed:asc`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },

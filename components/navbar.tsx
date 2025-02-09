@@ -16,6 +16,7 @@ import { Link } from "@heroui/link";
 import {
   SearchIcon,
   Logo,
+  HeartFilledIcon
 } from "@/components/icons";
 
 export const Navbar = () => {
@@ -49,7 +50,7 @@ export const Navbar = () => {
           <Logo className="text-primary" />
         </NextLink>
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      <NavbarContent className="hidden sm:flex gap-4 align-center" justify="center">
         <NavbarItem>
           <Link color="foreground" href="/browse">
             Browse
@@ -57,6 +58,7 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem isActive>
           <Link color="foreground" href="/favorites">
+            <HeartFilledIcon size={18} color={"violet"} />
             Favorites
           </Link>
         </NavbarItem>
@@ -69,7 +71,8 @@ export const Navbar = () => {
       <NavbarContent className="sm:hidden absolut top-10" justify="end">
         <NavbarMenuToggle />
       </NavbarContent>
-      <NavbarMenu>
+      <NavbarMenu className="py-12 gap-4">
+        {/* add top padding of 20 */}
         <NavbarMenuItem>
           <Link
             className="w-full"
@@ -85,11 +88,12 @@ export const Navbar = () => {
             href="/favorites"
             size="lg"
           >
+            <HeartFilledIcon size={16} color={"violet"} />
             Favorites
           </Link>
           <Link
             className="w-full"
-            color="warning"
+            color="danger"
             href="/logout"
             size="lg"
           >

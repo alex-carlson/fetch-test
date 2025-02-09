@@ -25,7 +25,7 @@ module.exports = {
       themes: {
         light: {
           colors: {
-            primary: "#e6be2d",
+            primary: "#ffb457 ",
             secondary: "#c14413",
             accent: "#ff1c7b",
             neutral: "#888585",

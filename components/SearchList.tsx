@@ -6,6 +6,7 @@ import { siteConfig } from "@/config/site";
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Button } from "@heroui/button";
+import { HeartFilledIcon } from "@/components/icons";
 
 export default function SearchList() {
 
@@ -14,8 +15,6 @@ export default function SearchList() {
     const { dogs, setDogs } = useDogDataContext();
     const { favorites, addFavorite, removeFavorite, isFavorite } = useUserDataContext();
     const { page, setPage } = useDogDataContext();
-    const { nextPage, setNextPage } = useDogDataContext();
-    const { prevPage, setPrevPage } = useDogDataContext();
 
     useEffect(() => {
         fetchDogData();
@@ -60,8 +59,6 @@ export default function SearchList() {
 
     const handleFavorite = (dog: any) => {
         addFavorite(dog);
-
-        console.log("favorites:" + favorites)
     };
 
     const NumberWithArticle = (number) => {
@@ -79,7 +76,7 @@ export default function SearchList() {
         <div className="w-full flex flex-col">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 {dogs.map((dog, index) => (
-                    <Card className="border-none" radius="lg" key={index}>
+                    <Card radius="lg" key={index}>
                         <Image
                             alt={dog.name}
                             className="object-cover w-full aspect-[1/1]"
@@ -90,9 +87,9 @@ export default function SearchList() {
                             <p>is {NumberWithArticle(dog.age)} year old {dog.breed}</p>
                             <p className="text-small text-default-500">zip: {dog.zip_code}</p>
                         </CardBody>
-                        <CardFooter className="flex justify-between py-3">
-                            <Button className="w-full" color="warning" onPress={() => handleFavorite(dog)}>
-                                Favorite
+                        <CardFooter className="flex justify-center py-3">
+                            <Button className="w-full font-bold text-center align-middle text-black" color="primary" onPress={() => handleFavorite(dog)}>
+                                <HeartFilledIcon size={16} color={"#c52545"} /> Favorite
                             </Button>
                         </CardFooter>
                     </Card>

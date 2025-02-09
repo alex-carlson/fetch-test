@@ -1,12 +1,11 @@
 "use client";
 import { title } from "@/components/primitives";
 import { useUserDataContext } from "@/context/UserContext";
-import { useDogDataContext } from "@/context/DogDataContext";
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Button } from "@heroui/button";
 import { siteConfig } from "@/config/site";
-import { f } from "@heroui/slider/dist/use-slider-9ae8d8d3";
+import { FavoriteIcon, HeartFilledIcon } from "@/components/icons";
 
 export default function Favorites() {
     const { favorites, removeFavorite } = useUserDataContext();
@@ -88,62 +87,50 @@ export default function Favorites() {
         // if match has an id, render match
         if (match.id) {
             return (
-                <Card className="border-none justify-center items-center" radius="lg">
-                    <p className="text-default-500 font-medium text-large py-0">{match.name} is your match!</p>
-                    <Image
-                        alt={match.name}
-                        className="object-cover w-full aspect-[1/1]"
-                        src={match.img}
-                    />
-                    <p className="text-med text-default-500">Congratulations!</p>
+                <Card className="border-none justify-center items-center max-w-sm" radius="lg">
+                    <p className="text-default-500 text-xl py-6 font-medium">{match.name} is your match!</p>
+                    <Image alt={match.name} className="aspect-[1/1] w-full object-cover" src={match.img} width={270} />
+                    <p className="text-xl text-default-500 py-6">Congratulations!</p>
                 </Card>
             );
         } else {
             return (
-                <div id="match">
-                    <div>
-                        <h1>No match found</h1>
-                    </div>
+                <div id="match" className="flex flex-col items-center justify-center gap-4 w-full">
+                    <h1 className="text-center text-2xl font-bold py-4">No match found</h1>
                 </div>
             );
         }
     };
 
     return (
-        <div className="flex flex-col items-center justify-center">
-            <div className="inline-block text-center justify-center">
-                <h1 className={title()}>Favorites</h1>
-                <div className="h-4" />
-                <div className="justify-center inline-block grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 ">
-                    {favorites.map((favorite, index) => (
-                        <Card className="border-none" radius="lg" key={index}>
-                            <Image
-                                alt={favorite.name}
-                                className="object-cover rounded-xl w-64 h-64 mx-auto"
-                                src={favorite.img}
-                                width={270}
-                            />
-                            <CardBody className="flex flex-col gap-2">
-                                <p className="text-default-500 font-medium text-large py-0">{favorite.name}</p>
-                                <p>is {NumberWithArticle(favorite.age)} year old {favorite.breed}</p>
-                                <p className="text-small text-default-500">zip: {favorite.zip_code}</p>
-                            </CardBody>
-                            <CardFooter className="flex justify-between py-3">
-                                <Button className="w-full" color="warning" onPress={() => handleFavorite(favorite)}>
-                                    Remove
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-                <div className="justify-center inline-block grid grid-cols-1 gap-6">
-                    <h1 className="text-center text-2xl font-bold">Find Match</h1>
-                    <Button color="warning" onPress={() => findMatch()}>Search</Button>
-                    <div className="justify-center inline-block grid grid-cols-1 gap-6 ">
-                        {/* draw match results */}
-                        <Match />
-                    </div>
-                </div>
+        <div className="w-auto max-w-7xl">
+            <h1 className="text-center text-2xl font-bold py-4">Favorites</h1>
+            <div className="grid content-center grid-cols-md:grid-cols-2 lg:grid-cols-5 gap-6 py-6">
+                {favorites.map((favorite, index) => (
+                    <Card className="grid grid-row" radius="lg" key={index}>
+                        <Image
+                            alt={favorite.name}
+                            className="object-cover rounded-xl w-64 h-64 mx-auto"
+                            src={favorite.img}
+                            width={270}
+                        />
+                        <CardBody className="flex flex-col gap-2">
+                            <p className="text-default-500 font-medium text-large py-0">{favorite.name}</p>
+                            <p>is {NumberWithArticle(favorite.age)} year old {favorite.breed}</p>
+                            <p className="text-small text-default-500">zip: {favorite.zip_code}</p>
+                        </CardBody>
+                        <CardFooter className="flex justify-between py-3">
+                            <Button className="w-full font-bold text-center align-middle text-black" color="primary" onPress={() => handleFavorite(favorite)}>
+                                <HeartFilledIcon size={16} color={"#c52545"} /> Remove
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                ))}
+            </div>
+            <div className="grid grid-row gap-6 content-center max-w-sm">
+                <h1 className="text-center text-2xl font-bold">Find Match</h1>
+                <Button color="primary" className="p-2 rounded-lg font-bold text-black" onPress={() => findMatch()}>Search</Button>
+                <Match />
             </div>
         </div >
     );
