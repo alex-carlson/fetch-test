@@ -1,13 +1,13 @@
 "use client";
 //template for search filters
-import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Slider } from "@heroui/slider"
-import { useState, useEffect, useContext } from "react";
-import { siteConfig } from "@/config/site";
-import { useDogDataContext } from "@/context/DogDataContext";
+import { useState, useEffect } from "react";
 import { Select, SelectItem } from "@heroui/select";
 import { Switch } from "@heroui/switch";
+
+import { siteConfig } from "@/config/site";
+import { useDogDataContext } from "@/context/DogDataContext";
 
 // create interface for sort mode, for breed, name, age, and location, ascending or descending.
 
@@ -64,6 +64,7 @@ export default function SearchFilters() {
 
         } catch (err) {
             let errorMessage = "An error occurred";
+
             if (err instanceof Error) {
                 errorMessage = err.message;
             }
@@ -98,10 +99,12 @@ export default function SearchFilters() {
             }
 
             const data = await response.json();
+
             setDogIds(data.resultIds);
 
         } catch (err) {
             let errorMessage = "An error occurred";
+
             if (err instanceof Error) {
                 errorMessage = err.message;
             }
@@ -133,12 +136,12 @@ export default function SearchFilters() {
                 <Select
                     isVirtualized
                     className=" p-2 rounded-lg"
-                    maxListboxHeight={400}
-                    showScrollIndicators={true}
                     label="Breed"
+                    maxListboxHeight={400}
                     placeholder="Browse by Breed"
                     selectedKeys={filteredBreeds}
                     selectionMode="single"
+                    showScrollIndicators={true}
                     onSelectionChange={(e) => setFilteredBreeds(e)}
                 >
                     {breeds.map((breed, index) => (
@@ -148,16 +151,16 @@ export default function SearchFilters() {
                     ))}
                 </Select>
                 <Input
-                    label="Zip Code"
                     className=" p-2 rounded-lg"
+                    label="Zip Code"
                     variant="flat"
                     onChange={(e) => setZipCode(e)}
                 />
                 <Slider
                     className="max-w-md"
                     label="Age Range"
-                    minValue={1}
                     maxValue={10}
+                    minValue={1}
                     step={1}
                     value={ageRange}
                     onChange={(e) => setAgeRange(e)}
@@ -168,11 +171,11 @@ export default function SearchFilters() {
                 <Select
                     isVirtualized
                     className=" p-2 rounded-lg max-w-96"
-                    showScrollIndicators={true}
                     label="Sort"
                     placeholder="Sort by"
                     selectedKeys={[sortType]}
                     selectionMode="single"
+                    showScrollIndicators={true}
                     onSelectionChange={(e) => setSortType(e.currentKey)}
                 >
                     <SelectItem key={SortType.Breed}>Breed</SelectItem>

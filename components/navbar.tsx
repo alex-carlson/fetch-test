@@ -10,7 +10,6 @@ import {
 import { Kbd } from "@heroui/kbd";
 import { Input } from "@heroui/input";
 import NextLink from "next/link";
-import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 
 import {
@@ -44,7 +43,7 @@ export const Navbar = () => {
 
   return (
     //hero ui navbar with just a centered logo
-    <HeroUINavbar maxWidth="xl" position="sticky" className="flex justify-center py-6">
+    <HeroUINavbar className="flex justify-center py-6" maxWidth="xl" position="sticky">
       <NavbarBrand as="li" className="gap-3 max-w-fit ">
         <NextLink className="flex justify-center items-center gap-1" href="/">
           <Logo className="text-primary" />
@@ -58,7 +57,7 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem isActive>
           <Link color="foreground" href="/favorites">
-            <HeartFilledIcon size={18} color={"violet"} />
+            <HeartFilledIcon color={"violet"} size={18} />
             Favorites
           </Link>
         </NavbarItem>
@@ -88,7 +87,7 @@ export const Navbar = () => {
             href="/favorites"
             size="lg"
           >
-            <HeartFilledIcon size={16} color={"violet"} />
+            <HeartFilledIcon color={"violet"} size={16} />
             Favorites
           </Link>
           <Link

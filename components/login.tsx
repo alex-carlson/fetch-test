@@ -2,10 +2,12 @@
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { useState } from "react";
-import { siteConfig } from "@/config/site";
 import { useRouter } from "next/navigation";
-import { useUserDataContext } from "@/context/UserContext";
 import { Form } from "@heroui/form";
+
+import { siteConfig } from "@/config/site";
+import { useUserDataContext } from "@/context/UserContext";
+
 
 
 export default function Login() {
@@ -36,6 +38,7 @@ export default function Login() {
 
         } catch (err) {
             let errorMessage = "An error occurred";
+
             if (err instanceof Error) {
                 errorMessage = err.message;
             }
@@ -45,22 +48,22 @@ export default function Login() {
 
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            <Form onSubmit={onSubmit} className="p-6 rounded-lg w-80 max-w-xs">
+            <Form className="p-6 rounded-lg w-80 max-w-xs" onSubmit={onSubmit}>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <Input
                     isRequired
-                    label="Name"
                     className="mb-6 w-full max-w-xs"
+                    label="Name"
                     onChange={(e) => setName(e.target.value)}
                 />
                 <Input
                     isRequired
+                    className="mb-6 w-full max-w-xs"
                     label="Email"
                     type="email"
-                    className="mb-6 w-full max-w-xs"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <Button type="submit" color="primary" className="w-full text-black font-bold">Login</Button>
+                <Button className="w-full text-black font-bold" color="primary" type="submit">Login</Button>
             </Form>
         </div>
     );

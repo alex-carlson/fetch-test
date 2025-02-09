@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect } from "react";
+import { Card, CardBody, CardFooter } from "@heroui/card";
+import { Image } from "@heroui/image";
+import { Button } from "@heroui/button";
+
 import { useDogDataContext } from "@/context/DogDataContext";
 import { useUserDataContext } from "@/context/UserContext";
 import { siteConfig } from "@/config/site";
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
-import { Image } from "@heroui/image";
-import { Button } from "@heroui/button";
 import { HeartFilledIcon } from "@/components/icons";
 
 export default function SearchList() {
@@ -46,10 +47,12 @@ export default function SearchList() {
             }
 
             const d = await response.json();
+
             setDogs(d);
 
         } catch (err) {
             let errorMessage = "An error occurred";
+
             if (err instanceof Error) {
                 errorMessage = err.message;
                 console.log(errorMessage);
@@ -65,6 +68,7 @@ export default function SearchList() {
         const getArticle = (num) => {
             const firstDigit = num.toString()[0]; // Get first digit as a string
             const vowels = ["8", "11", "18"]; // Numbers pronounced with a vowel sound
+
             return vowels.includes(num.toString()) || firstDigit === "8" ? "an" : "a";
         };
 
@@ -76,7 +80,7 @@ export default function SearchList() {
         <div className="w-full flex flex-col">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 {dogs.map((dog, index) => (
-                    <Card radius="lg" key={index}>
+                    <Card key={index} radius="lg">
                         <Image
                             alt={dog.name}
                             className="object-cover w-full aspect-[1/1]"
@@ -89,7 +93,7 @@ export default function SearchList() {
                         </CardBody>
                         <CardFooter className="flex justify-center py-3">
                             <Button className="w-full font-bold text-center align-middle text-black" color="primary" onPress={() => handleFavorite(dog)}>
-                                <HeartFilledIcon size={16} color={"#c52545"} /> Favorite
+                                <HeartFilledIcon color={"#c52545"} size={16} /> Favorite
                             </Button>
                         </CardFooter>
                     </Card>

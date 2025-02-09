@@ -1,11 +1,12 @@
 "use client";
-import { title } from "@/components/primitives";
-import { useUserDataContext } from "@/context/UserContext";
+
 import { Card, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Button } from "@heroui/button";
+
+import { useUserDataContext } from "@/context/UserContext";
 import { siteConfig } from "@/config/site";
-import { FavoriteIcon, HeartFilledIcon } from "@/components/icons";
+import { HeartFilledIcon } from "@/components/icons";
 import { DogData } from "@/context/DogDataContext";
 
 export default function Favorites() {
@@ -21,6 +22,7 @@ export default function Favorites() {
         const getArticle = (num: number) => {
             const firstDigit = num.toString()[0]; // Get first digit as a string
             const vowels = ["8", "11", "18"]; // Numbers pronounced with a vowel sound
+
             return vowels.includes(num.toString()) || firstDigit === "8" ? "an" : "a";
         };
 
@@ -29,6 +31,7 @@ export default function Favorites() {
 
     const findMatch = async () => {
         let favoriteIds = favorites.map((favorite) => favorite.id);
+
         try {
             const response = await fetch(`${siteConfig.api.baseUrl}/dogs/match?`,
                 {
@@ -50,6 +53,7 @@ export default function Favorites() {
 
         } catch (err) {
             let errorMessage = "An error occurred";
+
             if (err instanceof Error) {
                 errorMessage = err.message;
             }
@@ -74,6 +78,7 @@ export default function Favorites() {
 
         } catch (err) {
             let errorMessage = "An error occurred";
+
             if (err instanceof Error) {
                 errorMessage = err.message;
             }
@@ -95,7 +100,7 @@ export default function Favorites() {
             );
         } else {
             return (
-                <div id="match" className="flex flex-col items-center justify-center gap-4 w-full">
+                <div className="flex flex-col items-center justify-center gap-4 w-full" id="match">
                     <h1 className="text-center text-2xl font-bold py-4">No match found</h1>
                 </div>
             );
@@ -107,7 +112,7 @@ export default function Favorites() {
             <h1 className="text-center text-2xl font-bold py-4">Favorites</h1>
             <div className="grid content-center grid-cols-md:grid-cols-2 lg:grid-cols-5 gap-6 py-6">
                 {favorites.map((favorite, index) => (
-                    <Card className="grid grid-row" radius="lg" key={index}>
+                    <Card key={index} className="grid grid-row" radius="lg">
                         <Image
                             alt={favorite.name}
                             className="object-cover rounded-xl w-64 h-64 mx-auto"
@@ -121,7 +126,7 @@ export default function Favorites() {
                         </CardBody>
                         <CardFooter className="flex justify-between py-3">
                             <Button className="w-full font-bold text-center align-middle text-black" color="primary" onPress={() => handleFavorite(favorite)}>
-                                <HeartFilledIcon size={16} color={"#c52545"} /> Remove
+                                <HeartFilledIcon color={"#c52545"} size={16} /> Remove
                             </Button>
                         </CardFooter>
                     </Card>
@@ -129,7 +134,7 @@ export default function Favorites() {
             </div>
             <div className="grid grid-row gap-6 content-center max-w-sm">
                 <h1 className="text-center text-2xl font-bold">Find Match</h1>
-                <Button color="primary" className="p-2 rounded-lg font-bold text-black" onPress={() => findMatch()}>Search</Button>
+                <Button className="p-2 rounded-lg font-bold text-black" color="primary" onPress={() => findMatch()}>Search</Button>
                 <Match />
             </div>
         </div >

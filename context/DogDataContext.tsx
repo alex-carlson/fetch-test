@@ -38,8 +38,10 @@ export const DogDataProvider = ({ children }: { children: ReactNode }) => {
 
 export function useDogDataContext() {
     const context = useContext(DogDataContext);
+
     if (!context) {
         throw new Error("useDogData must be used within a DogDataProvider");
     }
+
     return context;
 }

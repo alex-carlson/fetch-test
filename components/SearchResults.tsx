@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
+import { Pagination } from "@heroui/pagination";
+
 import SearchList from "./SearchList";
-import { Pagination, PaginationItem, PaginationCursor } from "@heroui/pagination";
-import { useContext } from "react";
-import { DogDataProvider, useDogDataContext } from "@/context/DogDataContext";
-import { Button } from "@heroui/button";
+
+import { useDogDataContext } from "@/context/DogDataContext";
+
 
 function SearchResults() {
 
@@ -30,7 +31,7 @@ function SearchResults() {
             <SearchList />
             <div className="flex flex-col gap-5 py-3">
                 <div className="flex gap-2">
-                    <Pagination showControls color="primary" boundaries={3} initialPage={1} total={10} onChange={(e) => setPage(e)} />
+                    <Pagination showControls boundaries={3} color="primary" initialPage={1} total={10} onChange={(e) => setPage(e)} />
                 </div>
             </div>
         </section>

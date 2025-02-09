@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { DogDataProvider, DogData } from "./DogDataContext";
+
+import { DogData } from "./DogDataContext";
 
 
 interface UserDataType {
@@ -58,8 +59,10 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 
 export function useUserDataContext() {
     const context = useContext(UserDataContext);
+
     if (!context) {
         throw new Error("useUserData must be used within a UserDataProvider");
     }
+
     return context;
 }
