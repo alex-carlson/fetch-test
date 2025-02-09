@@ -6,6 +6,7 @@ import { Image } from "@heroui/image";
 import { Button } from "@heroui/button";
 import { siteConfig } from "@/config/site";
 import { FavoriteIcon, HeartFilledIcon } from "@/components/icons";
+import { DogData } from "@/context/DogDataContext";
 
 export default function Favorites() {
     const { favorites, removeFavorite } = useUserDataContext();
@@ -16,8 +17,8 @@ export default function Favorites() {
         removeFavorite(dog);
     };
 
-    const NumberWithArticle = (number) => {
-        const getArticle = (num) => {
+    const NumberWithArticle = (number: number) => {
+        const getArticle = (num: number) => {
             const firstDigit = num.toString()[0]; // Get first digit as a string
             const vowels = ["8", "11", "18"]; // Numbers pronounced with a vowel sound
             return vowels.includes(num.toString()) || firstDigit === "8" ? "an" : "a";
@@ -42,11 +43,10 @@ export default function Favorites() {
             }
 
             const data = await response.json();
+            // find the dog data that matches the returned id
+            const matchData: DogData = favorites.find((dog) => dog.id === data.match);
 
-            console.log(match);
-
-            // set match to dog with matching id in favorites
-            setMatch(favorites.find((dog) => dog.id === data.match));
+            setMatch(matchData);
 
         } catch (err) {
             let errorMessage = "An error occurred";

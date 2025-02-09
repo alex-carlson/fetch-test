@@ -6,8 +6,8 @@ import { DogDataProvider, DogData } from "./DogDataContext";
 interface UserDataType {
     name: string;
     setName: (name: string) => void;
-    favorites: object[];
-    match: object;
+    favorites: DogData[];
+    match: DogData;
     removeFavorite: (favorite: object) => void;
     addFavorite: (favorite: object) => void;
     clearFavorites: () => void;
@@ -18,7 +18,7 @@ interface UserDataType {
 const UserDataContext = createContext<UserDataType | null>({
     name: "",
     setName: () => { },
-    favorites: [{}],
+    favorites: [],
     match: {},
     removeFavorite: () => { },
     addFavorite: () => { },
