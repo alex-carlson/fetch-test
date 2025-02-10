@@ -132,10 +132,10 @@ export default function SearchFilters() {
 
     return (
         <div className="flex flex-col w-full items-center justify-center gap-4 py-8">
-            <div className="flex flex-col md:flex-row mx-auto w-full">
+            <div className="flex flex-col md:flex-row mx-auto w-full py-3 gap-4 text-center justify-center row-span-2">
                 <Select
                     isVirtualized
-                    className=" p-2 rounded-lg"
+                    className="rounded-lg max-w-96"
                     label="Breed"
                     maxListboxHeight={400}
                     placeholder="Browse by Breed"
@@ -150,12 +150,6 @@ export default function SearchFilters() {
                         </SelectItem>
                     ))}
                 </Select>
-                <Input
-                    className=" p-2 rounded-lg"
-                    label="Zip Code"
-                    variant="flat"
-                    onChange={(e) => setZipCode(e)}
-                />
                 <Slider
                     className="max-w-md"
                     label="Age Range"
@@ -167,10 +161,9 @@ export default function SearchFilters() {
                 />
             </div>
             <div className="flex flex-col md:flex-row mx-auto w-full py-3 gap-4 text-center justify-center row-span-2">
-                {/* add sort mode select */}
                 <Select
                     isVirtualized
-                    className=" p-2 rounded-lg max-w-96"
+                    className="rounded-lg max-w-96"
                     label="Sort"
                     placeholder="Sort by"
                     selectedKeys={[sortType]}
@@ -183,8 +176,7 @@ export default function SearchFilters() {
                     <SelectItem key={SortType.Age}>Age</SelectItem>
                     <SelectItem key={SortType.Location}>Location</SelectItem>
                 </Select>
-                <Switch isSelected={sortAscending} onValueChange={setSortAscending}>{sortAscending ? "Ascending" : "Descending"}</Switch>
-                {/* <Button color="primary" onPress={() => requestDogs()} className="w-full p-2 rounded-lg">Search</Button> */}
+                <Switch className="justify-self-end w-full" isSelected={sortAscending} onValueChange={setSortAscending}>{sortAscending ? "Ascending" : "Descending"}</Switch>
             </div>
         </div>
     );

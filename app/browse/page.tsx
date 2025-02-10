@@ -47,12 +47,10 @@ export default function Browse() {
     }, []);
 
     return (
-        <div>
-            <div className="inline-block text-center justify-center w-full py-8">
+        <div className="flex flex-col items-center justify-center w-full">
+            <div className="inline-block text-center justify-center w-full">
                 <h1 className={title({ color: "yellow" })}>{name}&apos;s </h1>
-                <h1 className={title({ color: "yellow" })}>Next Best Friend</h1>
-                <div className="h-4" />
-                <div className="flex flex-col gap-4 " />
+                <h1 className={title()}>Next Best Friend</h1>
             </div>
             <SearchFilters />
             <SearchResults />

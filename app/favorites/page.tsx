@@ -94,7 +94,7 @@ export default function Favorites() {
             return (
                 <Card className="border-none justify-center items-center max-w-sm" radius="lg">
                     <p className="text-default-500 text-xl py-6 font-medium">{match.name} is your match!</p>
-                    <Image alt={match.name} className="aspect-[1/1] w-full object-cover" src={match.img} width={270} />
+                    <Image alt={match.name} className="aspect-[1/1] w-full object-cover" src={match.img} />
                     <p className="text-xl text-default-500 py-6">Congratulations!</p>
                 </Card>
             );
@@ -108,16 +108,15 @@ export default function Favorites() {
     };
 
     return (
-        <div className="w-auto max-w-7xl">
+        <div className="w-full">
             <h1 className="text-center text-2xl font-bold py-4">Favorites</h1>
             <div className="grid content-center grid-cols-md:grid-cols-2 lg:grid-cols-5 gap-6 py-6">
                 {favorites.map((favorite, index) => (
                     <Card key={index} className="grid grid-row" radius="lg">
                         <Image
                             alt={favorite.name}
-                            className="object-cover rounded-xl w-64 h-64 mx-auto"
+                            className="object-cover rounded-xl w-full aspect-[1/1] mx-auto"
                             src={favorite.img}
-                            width={270}
                         />
                         <CardBody className="flex flex-col gap-2">
                             <p className="text-default-500 font-medium text-large py-0">{favorite.name}</p>

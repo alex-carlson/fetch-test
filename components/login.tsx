@@ -14,7 +14,9 @@ export default function Login() {
     const [error, setError] = useState(null);
     const router = useRouter();
 
-    const { name, setName } = useUserDataContext();
+    const { setName } = useUserDataContext();
+
+    const [localName, setLocalName] = useState("");
     const [email, setEmail] = useState("");
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,13 +28,14 @@ export default function Login() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ name, email }),
+                body: JSON.stringify({ name: localName, email }),
                 credentials: "include",
             });
 
             if (!response.ok) {
                 throw new Error("Login failed");
             } else {
+                setName(localName);
                 router.push("/browse");
             }
 
@@ -54,7 +57,7 @@ export default function Login() {
                     isRequired
                     className="mb-6 w-full max-w-xs"
                     label="Name"
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setLocalName(e.target.value)}
                 />
                 <Input
                     isRequired

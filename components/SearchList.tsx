@@ -14,8 +14,9 @@ export default function SearchList() {
     // get dogIds from context
     const { dogIds } = useDogDataContext();
     const { dogs, setDogs } = useDogDataContext();
-    const { favorites, addFavorite, removeFavorite, isFavorite } = useUserDataContext();
-    const { page, setPage } = useDogDataContext();
+    const { addFavorite, removeFavorite, isFavorite } = useUserDataContext();
+    const { page } = useDogDataContext();
+    const { name } = useUserDataContext();
 
     useEffect(() => {
         fetchDogData();
@@ -61,7 +62,11 @@ export default function SearchList() {
     }
 
     const handleFavorite = (dog: any) => {
-        addFavorite(dog);
+        if (isFavorite(dog.id)) {
+            removeFavorite(dog);
+        } else {
+            addFavorite(dog);
+        }
     };
 
     const NumberWithArticle = (number) => {
@@ -75,30 +80,58 @@ export default function SearchList() {
         return `${getArticle(number)} ${number}`;
     };
 
+    const FavoritedColor = (dog: any) => {
+        if (isFavorite(dog.id)) {
+            return "#c52545";
+        } else {
+            return "#8d8d8d";
+        }
+    };
 
+    const FavoritedText = (dog: any) => {
+        if (isFavorite(dog.id)) {
+            return "Unfavorite";
+        } else {
+            return "Favorite";
+        }
+    };
+
+    const renderDogs = () => {
+        // if no name, render no dogs found
+        if (name === "") {
+            return (
+                <h1 className="text-center text-2xl font-bold py-4">No dogs found</h1>
+            );
+        } else {
+            return (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    {dogs.map((dog, index) => (
+                        <Card key={index} radius="lg" className="flex flex-col gap-2 justify-center">
+                            <Image
+                                alt={dog.name}
+                                className="object-cover w-full aspect-[1/1]"
+                                src={dog.img}
+                            />
+                            <CardBody className="flex flex-col gap-2">
+                                <p className="text-default-500 font-medium text-large py-0">{dog.name}</p>
+                                <p>is {NumberWithArticle(dog.age)} year old {dog.breed}</p>
+                                <p className="text-small text-default-500">zip: {dog.zip_code}</p>
+                            </CardBody>
+                            <CardFooter className="flex justify-center py-3">
+                                <Button className="w-full font-bold text-center align-middle text-black" color="primary" onPress={() => handleFavorite(dog)}>
+                                    <HeartFilledIcon color={FavoritedColor(dog)} size={16} /> {FavoritedText(dog)}
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                </div>
+            )
+        }
+
+    }
     return (
         <div className="w-full flex flex-col">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {dogs.map((dog, index) => (
-                    <Card key={index} radius="lg">
-                        <Image
-                            alt={dog.name}
-                            className="object-cover w-full aspect-[1/1]"
-                            src={dog.img}
-                        />
-                        <CardBody className="flex flex-col gap-2">
-                            <p className="text-default-500 font-medium text-large py-0">{dog.name}</p>
-                            <p>is {NumberWithArticle(dog.age)} year old {dog.breed}</p>
-                            <p className="text-small text-default-500">zip: {dog.zip_code}</p>
-                        </CardBody>
-                        <CardFooter className="flex justify-center py-3">
-                            <Button className="w-full font-bold text-center align-middle text-black" color="primary" onPress={() => handleFavorite(dog)}>
-                                <HeartFilledIcon color={"#c52545"} size={16} /> Favorite
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))}
-            </div>
+            {renderDogs()}
         </div>
     );
 }
